@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+// create a schema  Category in database and add a relation one to many with items 
+
+model Category {
+  id String @id @default(uuid())
+  name String 
+  slug String 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // define relation one to many with items 
+
+  items Item[]
+}
+
+
+// create a Item Schema in database and add relation belongs to many with category
+
+model Item {
+  id String @id @default(uuid())
+  name String 
+  description String?
+  url String?
+  thumb String?
+  categoryId String 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  category Category @relation(fields: [categoryId] , references: [id])
+
+  
+
+}
